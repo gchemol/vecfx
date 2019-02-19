@@ -47,8 +47,14 @@ pub trait VecFloatMath {
     /// Minimum value of the samples.
     fn min(&self) -> f64;
 
+    /// Index to the minimum value of the samples.
+    fn imin(&self) -> usize;
+
     /// Maximum value of the samples.
     fn max(&self) -> f64;
+
+    /// Index to the maximum value of the samples.
+    fn imax(&self) -> usize;
 
     #[cfg(feature = "nalgebra")]
     /// Create dynamically allocated column vector from self
@@ -125,9 +131,23 @@ impl VecFloatMath for [f64] {
         self.iter().fold(self[0], |p, q| p.min(*q))
     }
 
+    fn imin(&self) -> usize {
+        assert!(!self.is_empty());
+        self.iter()
+            .enumerate()
+            .fold(0, |i, (j, q)| if self[i] < *q { i } else { j })
+    }
+
     fn max(&self) -> f64 {
         assert!(!self.is_empty());
         self.iter().fold(self[0], |p, q| p.max(*q))
+    }
+
+    fn imax(&self) -> usize {
+        assert!(!self.is_empty());
+        self.iter()
+            .enumerate()
+            .fold(0, |i, (j, q)| if self[i] > *q { i } else { j })
     }
 
     #[cfg(feature = "nalgebra")]
@@ -179,7 +199,11 @@ fn test_vec_math() {
     let x = [0.0, 0.0, 0.0];
     let y = [1.0, 1.0, 1.0];
     let r = x.vecdist(&y);
-    assert_relative_eq!(r, y.vec2norm(), epsilon=1e-4);
+    assert_relative_eq!(r, y.vec2norm(), epsilon = 1e-4);
+
+    let x = [1.0, 2.0, -5.0];
+    assert_eq!(x.imin(), 2);
+    assert_eq!(x.imax(), 1);
 }
 
 #[cfg(feature = "nalgebra")]
@@ -190,7 +214,6 @@ fn test_vec_math_na() {
     let v = y.to_column_vector();
     assert_eq!(v.norm_squared(), 3.0);
 }
-
 
 /// Treat a flat slice as 3D positions
 ///
