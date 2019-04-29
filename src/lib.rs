@@ -2,7 +2,7 @@
 
 // for Vec<f64>
 
-// [[file:~/Workspace/Programming/rust-libs/vecfx/vecfx.note::*for%20Vec<f64>][for Vec<f64>:1]]
+// [[file:~/Workspace/Programming/gchemol-rs/vecfx/vecfx.note::*for%20Vec<f64>][for Vec<f64>:1]]
 #[cfg(feature = "nalgebra")]
 use nalgebra as na;
 
@@ -152,7 +152,7 @@ impl VecFloatMath for [f64] {
 
     #[cfg(feature = "nalgebra")]
     fn to_column_vector(&self) -> na::DVector<f64> {
-        na::DVector::from_column_slice(self.len(), &self)
+        na::DVector::from_column_slice(&self)
     }
 }
 
@@ -254,7 +254,7 @@ impl VecFloatAs3D for [f64] {
 
 // for Vec<[f64; 3]>
 
-// [[file:~/Workspace/Programming/rust-libs/vecfx/vecfx.note::*for%20Vec<%5Bf64;%203%5D>][for Vec<[f64; 3]>:1]]
+// [[file:~/Workspace/Programming/gchemol-rs/vecfx/vecfx.note::*for%20Vec<%5Bf64;%203%5D>][for Vec<[f64; 3]>:1]]
 #[cfg(feature = "nalgebra")]
 /// 3xN matrix storing a list of 3D vectors
 pub type Vector3fVec =
@@ -292,7 +292,7 @@ impl VecFloat3Wrapper for [[f64; 3]] {
     /// Create a 3xN matrix of nalgebra from self
     fn to_matrix(&self) -> Vector3fVec {
         let r = self.as_flat();
-        Vector3fVec::from_column_slice(self.len(), r)
+        Vector3fVec::from_column_slice(r)
     }
 }
 
@@ -334,7 +334,7 @@ fn test_vecf3() {
 }
 // for Vec<[f64; 3]>:1 ends here
 
-// [[file:~/Workspace/Programming/rust-libs/vecfx/vecfx.note::*for%20Vec<%5Bf64;%203%5D>][for Vec<[f64; 3]>:2]]
+// [[file:~/Workspace/Programming/gchemol-rs/vecfx/vecfx.note::*for%20Vec<%5Bf64;%203%5D>][for Vec<[f64; 3]>:2]]
 #[cfg(feature = "nalgebra")]
 impl VecFloatAs3D for Vector3fVec {
     fn as_3d(&self) -> &[[f64; 3]] {
