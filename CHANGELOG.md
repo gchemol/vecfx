@@ -1,4 +1,9 @@
 
+# <span class="timestamp-wrapper"><span class="timestamp">[2019-05-10 Fri] </span></span> v0.0.5
+
+-   add methods for vector projection/rejection
+
+
 # <span class="timestamp-wrapper"><span class="timestamp">[2019-04-29 Mon] </span></span> v0.0.4
 
 -   update nalgebra to v0.18

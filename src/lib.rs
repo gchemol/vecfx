@@ -1,16 +1,32 @@
 //! Backend for vector operations
 
-// for Vec<f64>
+// imports
 
-// [[file:~/Workspace/Programming/gchemol-rs/vecfx/vecfx.note::*for%20Vec<f64>][for Vec<f64>:1]]
+// [[file:~/Workspace/Programming/gchemol-rs/vecfx/vecfx.note::*imports][imports:1]]
+use std::f64;
+
 #[cfg(feature = "nalgebra")]
 use nalgebra as na;
 
 #[cfg(test)]
 use approx::*;
+// imports:1 ends here
 
+// mods
+
+// [[file:~/Workspace/Programming/gchemol-rs/vecfx/vecfx.note::*mods][mods:1]]
+#[cfg(feature = "nalgebra")]
+mod projection;
+
+#[cfg(feature = "nalgebra")]
+pub use projection::*;
+// mods:1 ends here
+
+// for Vec<f64>
+
+// [[file:~/Workspace/Programming/gchemol-rs/vecfx/vecfx.note::*for%20Vec<f64>][for Vec<f64>:1]]
 /// Abstracting simple vector based math operations
-pub trait VecFloatMath {
+pub trait VecFloatExt {
     /// y += c*x
     fn vecadd(&mut self, x: &[f64], c: f64);
 
@@ -66,7 +82,7 @@ pub trait VecFloatMath {
     }
 }
 
-impl VecFloatMath for [f64] {
+impl VecFloatExt for [f64] {
     /// y += c*x
     fn vecadd(&mut self, x: &[f64], c: f64) {
         for (y, x) in self.iter_mut().zip(x) {
@@ -215,7 +231,7 @@ fn test_vec_math_na() {
     assert_eq!(v.norm_squared(), 3.0);
 }
 
-/// Treat a flat slice as 3D positions
+/// Treat a flat slice as 3D coordinates
 ///
 /// # Panics
 /// if the slice size is incorrect.
@@ -258,9 +274,9 @@ impl VecFloatAs3D for [f64] {
 #[cfg(feature = "nalgebra")]
 /// 3xN matrix storing a list of 3D vectors
 pub type Vector3fVec =
-    na::Matrix<f64, na::U3, na::Dynamic, na::MatrixVec<f64, na::U3, na::Dynamic>>;
+    na::Matrix<f64, na::U3, na::Dynamic, na::VecStorage<f64, na::U3, na::Dynamic>>;
 
-pub trait VecFloat3Wrapper {
+pub trait VecFloat3Ext {
     /// Return a 1-D array, containing the elements of 3xN array
     fn ravel(&self) -> Vec<f64> {
         self.as_flat().to_vec()
@@ -277,7 +293,7 @@ pub trait VecFloat3Wrapper {
     fn to_matrix(&self) -> Vector3fVec;
 }
 
-impl VecFloat3Wrapper for [[f64; 3]] {
+impl VecFloat3Ext for [[f64; 3]] {
     /// View as a flat slice
     fn as_flat(&self) -> &[f64] {
         unsafe { ::std::slice::from_raw_parts(self.as_ptr() as *const _, self.len() * 3) }
@@ -371,15 +387,51 @@ fn test_as_3d() {
     assert_eq!(p, &mut [[1., 2., 3.], [4., 5., 6.],]);
 }
 
+#[test]
 #[cfg(feature = "nalgebra")]
 fn test_as_3d_na() {
     let p = [1., 2., 3.];
     let mut m = p.as_3d().to_matrix();
-    let n = m.norm();
-    let mut mp = m.as_mut_3d();
+    let _ = m.norm();
+
+    let mut v = vec![[1., 2., 3.], [4., 5., 6.]].to_matrix();
+    let mp = v.as_mut_3d();
     assert_eq!(mp, &mut [[1., 2., 3.], [4., 5., 6.],]);
 
     mp[0][0] = 1.1;
-    assert_eq!(1.1, m[(0, 0)]);
+    assert_eq!(1.1, v[(0, 0)]);
 }
 // for Vec<[f64; 3]>:2 ends here
+
+// for Iterator<Item=f64>
+// Adopted from:
+// [[doi:][https://www.reddit.com/r/rust/comments/3fg0xr/how_do_i_find_the_max_value_in_a_vecf64/ctoaxna?utm_source=share&utm_medium=web2x]]
+
+
+// [[file:~/Workspace/Programming/gchemol-rs/vecfx/vecfx.note::*for%20Iterator<Item=f64>][for Iterator<Item=f64>:1]]
+pub trait FloatIterExt {
+    fn float_min(&mut self) -> f64;
+    fn float_max(&mut self) -> f64;
+}
+
+impl<T> FloatIterExt for T
+where
+    T: Iterator<Item = f64>,
+{
+    fn float_max(&mut self) -> f64 {
+        self.fold(f64::NAN, f64::max)
+    }
+
+    fn float_min(&mut self) -> f64 {
+        self.fold(f64::NAN, f64::min)
+    }
+}
+
+#[test]
+fn test_float_iter_min_max() {
+    let x = vec![1.0f64, 2.0, 0.0, -9.0, 0.0 / 0.0];
+
+    assert_eq!(x.iter().cloned().float_max(), 2.0);
+    assert_eq!(x.iter().cloned().float_min(), -9.0);
+}
+// for Iterator<Item=f64>:1 ends here
