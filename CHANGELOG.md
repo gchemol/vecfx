@@ -1,4 +1,9 @@
 
+# <span class="timestamp-wrapper"><span class="timestamp">[2019-12-06 Fri] </span></span> v0.0.6
+
+-   add mean, var, std\_dev methods adopted from libtest.
+
+
 # <span class="timestamp-wrapper"><span class="timestamp">[2019-05-10 Fri] </span></span> v0.0.5
 
 -   add methods for vector projection/rejection
