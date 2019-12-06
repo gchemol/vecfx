@@ -14,5 +14,6 @@ nalgebra = {version="0.18", optional = true, features=["serde-serialize"]}
 approx = "0.3"
 
 [features]
+#default = ["nalgebra"]
 default = []
 # cargo:1 ends here

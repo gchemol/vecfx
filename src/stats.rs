@@ -147,12 +147,14 @@ mod tests {
     use approx::*;
 
     #[test]
-    fn test_min_max_nan() {
+    fn test_stats_nan() {
         let xs = &[1.0, 2.0, std::f64::NAN, 3.0, 4.0];
         assert_eq!(xs.min(), 1.0);
         assert_eq!(xs.max(), 4.0);
         assert_eq!(xs.imin(), 0);
         assert_eq!(xs.imax(), 4);
+        assert!(xs.sum().is_nan());
+        assert!(xs.mean().is_nan());
     }
 
     #[test]

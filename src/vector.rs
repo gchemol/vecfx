@@ -1,3 +1,10 @@
+// imports
+
+// [[file:~/Workspace/Programming/gchemol-rs/vecfx/vecfx.note::*imports][imports:1]]
+#[cfg(feature = "nalgebra")]
+use nalgebra as na;
+// imports:1 ends here
+
 // for Vec<f64>
 
 // [[file:~/Workspace/Programming/gchemol-rs/vecfx/vecfx.note::*for%20Vec<f64>][for Vec<f64>:1]]
@@ -253,6 +260,8 @@ impl VecFloat3Ext for [[f64; 3]] {
 
 #[test]
 fn test_vecf3() {
+    use approx::*;
+
     #[cfg(feature = "nalgebra")]
     {
         let a = vec![1.0, 2.0, 3.0];

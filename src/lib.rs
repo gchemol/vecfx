@@ -4,9 +4,6 @@
 
 // [[file:~/Workspace/Programming/gchemol-rs/vecfx/vecfx.note::*imports][imports:1]]
 use std::f64;
-
-#[cfg(feature = "nalgebra")]
-use nalgebra as na;
 // imports:1 ends here
 
 // mods
