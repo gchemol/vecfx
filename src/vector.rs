@@ -222,6 +222,9 @@ impl VecFloatAs3D for [f64] {
 pub type Vector3fVec =
     na::Matrix<f64, na::U3, na::Dynamic, na::VecStorage<f64, na::U3, na::Dynamic>>;
 
+#[cfg(feature = "nalgebra")]
+pub type Vector3f = na::Vector3<f64>;
+
 pub trait VecFloat3Ext {
     /// Return a 1-D array, containing the elements of 3xN array
     fn ravel(&self) -> Vec<f64> {
@@ -350,3 +353,25 @@ fn test_as_3d_na() {
     assert_eq!(1.1, v[(0, 0)]);
 }
 // for Vec<[f64; 3]>:2 ends here
+
+// tests
+
+// [[file:~/Workspace/Programming/gchemol-rs/vecfx/vecfx.note::*tests][tests:1]]
+#[cfg(feature = "nalgebra")]
+#[test]
+fn test_vector3f() {
+    use approx::*;
+
+    let a = Vector3f::from([1.0, 2.0, 3.0]);
+    assert_eq!(a.x, 1.0);
+    assert_eq!(a.y, 2.0);
+    assert_eq!(a.z, 3.0);
+    assert_eq!(a[0], 1.0);
+    assert_eq!(a[1], 2.0);
+    assert_eq!(a[2], 3.0);
+
+    let b = Vector3f::from([1.0, 2.0, 3.0]);
+    let c = a + b;
+    assert_relative_eq!(c.sum(), 12.0);
+}
+// tests:1 ends here
