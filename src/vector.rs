@@ -5,6 +5,23 @@
 use nalgebra as na;
 // imports:1 ends here
 
+// types
+
+// [[file:~/Workspace/Programming/gchemol-rs/vecfx/vecfx.note::*types][types:1]]
+#[cfg(feature = "nalgebra")]
+/// 3xN matrix storing a list of 3D vectors
+pub type Vector3fVec =
+    na::Matrix<f64, na::U3, na::Dynamic, na::VecStorage<f64, na::U3, na::Dynamic>>;
+
+#[cfg(feature = "nalgebra")]
+/// A stack-allocated, 3-dimensional column vector.
+pub type Vector3f = na::Vector3<f64>;
+
+#[cfg(feature = "nalgebra")]
+/// A stack-allocated, column-major, 3x3 square matrix
+pub type Matrix3f = na::Matrix3<f64>;
+// types:1 ends here
+
 // for Vec<f64>
 
 // [[file:~/Workspace/Programming/gchemol-rs/vecfx/vecfx.note::*for%20Vec<f64>][for Vec<f64>:1]]
@@ -217,14 +234,6 @@ impl VecFloatAs3D for [f64] {
 // for Vec<[f64; 3]>
 
 // [[file:~/Workspace/Programming/gchemol-rs/vecfx/vecfx.note::*for%20Vec<%5Bf64;%203%5D>][for Vec<[f64; 3]>:1]]
-#[cfg(feature = "nalgebra")]
-/// 3xN matrix storing a list of 3D vectors
-pub type Vector3fVec =
-    na::Matrix<f64, na::U3, na::Dynamic, na::VecStorage<f64, na::U3, na::Dynamic>>;
-
-#[cfg(feature = "nalgebra")]
-pub type Vector3f = na::Vector3<f64>;
-
 pub trait VecFloat3Ext {
     /// Return a 1-D array, containing the elements of 3xN array
     fn ravel(&self) -> Vec<f64> {
@@ -354,9 +363,9 @@ fn test_as_3d_na() {
 }
 // for Vec<[f64; 3]>:2 ends here
 
-// tests
+// test
 
-// [[file:~/Workspace/Programming/gchemol-rs/vecfx/vecfx.note::*tests][tests:1]]
+// [[file:~/Workspace/Programming/gchemol-rs/vecfx/vecfx.note::*test][test:1]]
 #[cfg(feature = "nalgebra")]
 #[test]
 fn test_vector3f() {
@@ -374,4 +383,4 @@ fn test_vector3f() {
     let c = a + b;
     assert_relative_eq!(c.sum(), 12.0);
 }
-// tests:1 ends here
+// test:1 ends here

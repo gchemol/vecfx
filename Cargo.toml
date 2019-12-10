@@ -3,7 +3,7 @@
 # [[file:~/Workspace/Programming/gchemol-rs/vecfx/vecfx.note::*cargo][cargo:1]]
 [package]
 name = "vecfx"
-version = "0.0.6"
+version = "0.0.7"
 edition = "2018"
 authors = ["Wenping Guo <ybyygu@gmail.com>"]
 
@@ -14,6 +14,5 @@ nalgebra = {version="0.19", optional = true, features=["serde-serialize"]}
 approx = "0.3"
 
 [features]
-#default = ["nalgebra"]
 default = []
 # cargo:1 ends here
