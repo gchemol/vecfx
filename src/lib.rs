@@ -25,6 +25,9 @@ pub use crate::stats::*;
 pub use projection::*;
 
 pub use crate::vector::*;
+
+#[cfg(feature = "nalgebra")]
+pub use nalgebra;
 // pub:1 ends here
 
 // for Iterator<Item=f64>
@@ -32,7 +35,7 @@ pub use crate::vector::*;
 // [[doi:][https://www.reddit.com/r/rust/comments/3fg0xr/how_do_i_find_the_max_value_in_a_vecf64/ctoaxna?utm_source=share&utm_medium=web2x]]
 
 
-// [[file:~/Workspace/Programming/gchemol-rs/vecfx/vecfx.note::*for%20Iterator<Item=f64>][for Iterator<Item=f64>:1]]
+// [[file:~/Workspace/Programming/gchemol-rs/vecfx/vecfx.note::*for Iterator<Item=f64>][for Iterator<Item=f64>:1]]
 pub trait FloatIterExt {
     fn float_min(&mut self) -> f64;
     fn float_max(&mut self) -> f64;
