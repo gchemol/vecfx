@@ -6,9 +6,15 @@ name = "vecfx"
 version = "0.0.8"
 edition = "2018"
 authors = ["Wenping Guo <ybyygu@gmail.com>"]
+description = "Extra batteries for a vec of floats"
+homepage = "https://github.com/gchemol/vecfx"
+repository = "https://github.com/gchemol/vecfx"
+readme = "README.md"
+license = "MIT OR Apache-2.0"
 
 [dependencies]
 nalgebra = {version="0.19", optional = true, features=["serde-serialize"]}
+
 
 [dev-dependencies]
 approx = "0.3"
