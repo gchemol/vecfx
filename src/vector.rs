@@ -24,7 +24,7 @@ pub type Matrix3f = na::Matrix3<f64>;
 
 // for Vec<f64>
 
-// [[file:~/Workspace/Programming/gchemol-rs/vecfx/vecfx.note::*for%20Vec<f64>][for Vec<f64>:1]]
+// [[file:~/Workspace/Programming/gchemol-rs/vecfx/vecfx.note::*for Vec<f64>][for Vec<f64>:1]]
 /// Abstracting simple vector based math operations
 pub trait VecFloatExt {
     /// y += c*x
@@ -123,7 +123,7 @@ impl VecFloatExt for [f64] {
         1.0 / self.vec2norm()
     }
 
-    /// d = ||a-b||
+    /// d = ||a-b||^2
     fn vecdist_squared(&self, other: &[f64]) -> f64 {
         self.iter()
             .zip(other)
@@ -194,7 +194,7 @@ fn test_vec_math_na() {
     assert_eq!(v.norm_squared(), 3.0);
 }
 
-/// Treat a flat slice as 3D coordinates
+/// View a flat slice as nested 3D array
 ///
 /// # Panics
 /// if the slice size is incorrect.
@@ -233,7 +233,7 @@ impl VecFloatAs3D for [f64] {
 
 // for Vec<[f64; 3]>
 
-// [[file:~/Workspace/Programming/gchemol-rs/vecfx/vecfx.note::*for%20Vec<%5Bf64;%203%5D>][for Vec<[f64; 3]>:1]]
+// [[file:~/Workspace/Programming/gchemol-rs/vecfx/vecfx.note::*for Vec<\[f64; 3\]>][for Vec<[f64; 3]>:1]]
 pub trait VecFloat3Ext {
     /// Return a 1-D array, containing the elements of 3xN array
     fn ravel(&self) -> Vec<f64> {
@@ -310,7 +310,7 @@ fn test_vecf3() {
 }
 // for Vec<[f64; 3]>:1 ends here
 
-// [[file:~/Workspace/Programming/gchemol-rs/vecfx/vecfx.note::*for%20Vec<%5Bf64;%203%5D>][for Vec<[f64; 3]>:2]]
+// [[file:~/Workspace/Programming/gchemol-rs/vecfx/vecfx.note::*for Vec<\[f64; 3\]>][for Vec<[f64; 3]>:2]]
 #[cfg(feature = "nalgebra")]
 impl VecFloatAs3D for Vector3fVec {
     fn as_3d(&self) -> &[[f64; 3]] {
