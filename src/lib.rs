@@ -31,4 +31,7 @@ pub use crate::vector::*;
 pub use nalgebra;
 
 pub use crate::iterator::FloatIterExt;
+
+#[cfg(feature = "nalgebra")]
+pub use crate::iterator::na::*;
 // pub:1 ends here

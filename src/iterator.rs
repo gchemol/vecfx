@@ -1,3 +1,56 @@
+// na matrix
+// mol.positions => nalgebra vector/matrix
+
+// [[file:~/Workspace/Programming/gchemol-rs/vecfx/vecfx.note::*na matrix][na matrix:1]]
+#[cfg(feature = "nalgebra")]
+pub(crate) mod na {
+    use crate::nalgebra as na;
+    use crate::vector::*;
+    use crate::Matrix3f;
+
+    pub trait FloatIterToVector {
+        fn to_vector(self) -> na::DVector<f64>;
+    }
+
+    pub trait FloatIterToMatrix {
+        fn to_matrix(self) -> Vector3fVec;
+    }
+
+    impl<T, F> FloatIterToVector for T
+    where
+        T: Iterator<Item = F>,
+        F: std::borrow::Borrow<f64>,
+    {
+        fn to_vector(self) -> na::DVector<f64> {
+            let d: Vec<f64> = self.map(|x| *x.borrow()).collect();
+            d.to_column_vector()
+        }
+    }
+
+    impl<F, T> FloatIterToMatrix for T
+    where
+        T: Iterator<Item = F>,
+        F: std::borrow::Borrow<[f64; 3]>,
+    {
+        fn to_matrix(self) -> Vector3fVec {
+            let d: Vec<[f64; 3]> = self.map(|x| *x.borrow()).collect();
+            d.to_matrix()
+        }
+    }
+
+    #[test]
+    fn test_float_iter_trait() {
+        let d = vec![1f64, 2.0, 3.0];
+        let _ = d.iter().to_vector();
+        let _ = d.into_iter().to_vector();
+
+        let d = vec![[1f64; 3], [2.0; 3], [3.0; 3]];
+        let _ = d.iter().to_matrix();
+        let _ = d.into_iter().to_matrix();
+    }
+}
+// na matrix:1 ends here
+
 // impl
 
 // [[file:~/Workspace/Programming/gchemol-rs/vecfx/vecfx.note::*impl][impl:1]]
