@@ -249,6 +249,11 @@ pub trait VecFloat3Ext {
     #[cfg(feature = "nalgebra")]
     /// Create a 3xN matrix of nalgebra from self
     fn to_matrix(&self) -> Vector3fVec;
+
+    #[cfg(feature = "nalgebra")]
+    #[cfg(feature = "adhoc")]
+    /// Return distance matrix
+    fn distance_matrix(&self) -> na::DMatrix<f64>;
 }
 
 impl VecFloat3Ext for [[f64; 3]] {
@@ -267,6 +272,24 @@ impl VecFloat3Ext for [[f64; 3]] {
     fn to_matrix(&self) -> Vector3fVec {
         let r = self.as_flat();
         Vector3fVec::from_column_slice(r)
+    }
+
+    /// Return distance matrix
+    #[cfg(feature = "nalgebra")]
+    #[cfg(feature = "adhoc")]
+    fn distance_matrix(&self) -> na::DMatrix<f64> {
+        let n = self.len();
+
+        let mut distances = na::DMatrix::zeros(n, n);
+        for i in 0..n {
+            for j in 0..i {
+                let d = self[i].vecdist(&self[j]);
+                distances[(i, j)] = d;
+                distances[(j, i)] = d;
+            }
+        }
+
+        distances
     }
 }
 
