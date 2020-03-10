@@ -1,6 +1,3 @@
-// na matrix
-// mol.positions => nalgebra vector/matrix
-
 // [[file:~/Workspace/Programming/gchemol-rs/vecfx/vecfx.note::*na matrix][na matrix:1]]
 #[cfg(feature = "nalgebra")]
 pub(crate) mod na {
@@ -21,6 +18,7 @@ pub(crate) mod na {
         T: Iterator<Item = F>,
         F: std::borrow::Borrow<f64>,
     {
+        /// Convert an iterator over floats as Nalgebra column vector
         fn to_vector(self) -> na::DVector<f64> {
             let d: Vec<f64> = self.map(|x| *x.borrow()).collect();
             d.to_column_vector()
@@ -32,6 +30,7 @@ pub(crate) mod na {
         T: Iterator<Item = F>,
         F: std::borrow::Borrow<[f64; 3]>,
     {
+        /// Convert an iterator over float array as Nalgebra 3xN matrix
         fn to_matrix(self) -> Vector3fVec {
             let d: Vec<[f64; 3]> = self.map(|x| *x.borrow()).collect();
             d.to_matrix()
@@ -50,8 +49,6 @@ pub(crate) mod na {
     }
 }
 // na matrix:1 ends here
-
-// impl
 
 // [[file:~/Workspace/Programming/gchemol-rs/vecfx/vecfx.note::*impl][impl:1]]
 use std::borrow::Borrow;
@@ -105,8 +102,6 @@ where
 {
 }
 // impl:1 ends here
-
-// test
 
 // [[file:~/Workspace/Programming/gchemol-rs/vecfx/vecfx.note::*test][test:1]]
 #[cfg(test)]
