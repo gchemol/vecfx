@@ -1,13 +1,9 @@
-// imports
-
-// [[file:~/Workspace/Programming/gchemol-rs/vecfx/vecfx.note::*imports][imports:1]]
+// [[file:../vecfx.note::*imports][imports:1]]
 #[cfg(feature = "nalgebra")]
 use nalgebra as na;
 // imports:1 ends here
 
-// types
-
-// [[file:~/Workspace/Programming/gchemol-rs/vecfx/vecfx.note::*types][types:1]]
+// [[file:../vecfx.note::*types][types:1]]
 #[cfg(feature = "nalgebra")]
 /// 3xN matrix storing a list of 3D vectors
 pub type Vector3fVec =
@@ -20,11 +16,13 @@ pub type Vector3f = na::Vector3<f64>;
 #[cfg(feature = "nalgebra")]
 /// A stack-allocated, column-major, 3x3 square matrix
 pub type Matrix3f = na::Matrix3<f64>;
+
+// #[cfg(feature = "nalgebra")]
+// /// A dynamically sized column vector
+// pub type Vector = na::DVector<f64>;
 // types:1 ends here
 
-// for Vec<f64>
-
-// [[file:~/Workspace/Programming/gchemol-rs/vecfx/vecfx.note::*for Vec<f64>][for Vec<f64>:1]]
+// [[file:../vecfx.note::*for Vec<f64>][for Vec<f64>:1]]
 /// Abstracting simple vector based math operations
 pub trait VecFloatExt {
     /// y += c*x
@@ -46,7 +44,7 @@ pub trait VecFloatExt {
     /// y *= c
     fn vecscale(&mut self, c: f64);
 
-    /// ||x||
+    /// ||x||, L2 norm
     fn vec2norm(&self) -> f64;
 
     /// 1 / ||x||
@@ -112,7 +110,7 @@ impl VecFloatExt for [f64] {
         }
     }
 
-    /// ||x||
+    /// ||x||, L2 norm
     fn vec2norm(&self) -> f64 {
         let n2 = self.vecdot(&self);
         n2.sqrt()
@@ -231,9 +229,7 @@ impl VecFloatAs3D for [f64] {
 }
 // for Vec<f64>:1 ends here
 
-// for Vec<[f64; 3]>
-
-// [[file:~/Workspace/Programming/gchemol-rs/vecfx/vecfx.note::*for Vec<\[f64; 3\]>][for Vec<[f64; 3]>:1]]
+// [[file:../vecfx.note::*for Vec<\[f64; 3\]>][for Vec<[f64; 3]>:1]]
 pub trait VecFloat3Ext {
     /// Return a 1-D array, containing the elements of 3xN array
     fn ravel(&self) -> Vec<f64> {
@@ -333,62 +329,60 @@ fn test_vecf3() {
 }
 // for Vec<[f64; 3]>:1 ends here
 
-// [[file:~/Workspace/Programming/gchemol-rs/vecfx/vecfx.note::*for Vec<\[f64; 3\]>][for Vec<[f64; 3]>:2]]
-#[cfg(feature = "nalgebra")]
-impl VecFloatAs3D for Vector3fVec {
-    fn as_3d(&self) -> &[[f64; 3]] {
-        assert_eq!(
-            0,
-            self.len() % 3,
-            "cannot view Matrix of length {} as &[[_; 3]]",
-            self.len()
-        );
+// [[file:../vecfx.note::*for Vec<\[f64; 3\]>][for Vec<[f64; 3]>:2]]
+  #[cfg(feature = "nalgebra")]
+  impl VecFloatAs3D for Vector3fVec {
+      fn as_3d(&self) -> &[[f64; 3]] {
+          assert_eq!(
+              0,
+              self.len() % 3,
+              "cannot view Matrix of length {} as &[[_; 3]]",
+              self.len()
+          );
 
-        self.as_slice().as_3d()
-    }
+          self.as_slice().as_3d()
+      }
 
-    fn as_mut_3d(&mut self) -> &mut [[f64; 3]] {
-        assert_eq!(
-            0,
-            self.len() % 3,
-            "cannot view Matrix of length {} as &[[_; 3]]",
-            self.len()
-        );
+      fn as_mut_3d(&mut self) -> &mut [[f64; 3]] {
+          assert_eq!(
+              0,
+              self.len() % 3,
+              "cannot view Matrix of length {} as &[[_; 3]]",
+              self.len()
+          );
 
-        self.as_mut_slice().as_mut_3d()
-    }
-}
+          self.as_mut_slice().as_mut_3d()
+      }
+  }
 
-#[test]
-fn test_as_3d() {
-    let v = [1., 2., 3.];
-    let p = v.as_3d();
-    assert_eq!(&[[1., 2., 3.]], p);
+  #[test]
+  fn test_as_3d() {
+      let v = [1., 2., 3.];
+      let p = v.as_3d();
+      assert_eq!(&[[1., 2., 3.]], p);
 
-    let mut v = vec![1., 2., 3., 4., 5., 6.];
-    let p = &mut v.as_mut_3d();
-    assert_eq!(p, &mut [[1., 2., 3.], [4., 5., 6.],]);
-}
+      let mut v = vec![1., 2., 3., 4., 5., 6.];
+      let p = &mut v.as_mut_3d();
+      assert_eq!(p, &mut [[1., 2., 3.], [4., 5., 6.],]);
+  }
 
-#[test]
-#[cfg(feature = "nalgebra")]
-fn test_as_3d_na() {
-    let p = [1., 2., 3.];
-    let mut m = p.as_3d().to_matrix();
-    let _ = m.norm();
+  #[test]
+  #[cfg(feature = "nalgebra")]
+  fn test_as_3d_na() {
+      let p = [1., 2., 3.];
+      let mut m = p.as_3d().to_matrix();
+      let _ = m.norm();
 
-    let mut v = vec![[1., 2., 3.], [4., 5., 6.]].to_matrix();
-    let mp = v.as_mut_3d();
-    assert_eq!(mp, &mut [[1., 2., 3.], [4., 5., 6.],]);
+      let mut v = vec![[1., 2., 3.], [4., 5., 6.]].to_matrix();
+      let mp = v.as_mut_3d();
+      assert_eq!(mp, &mut [[1., 2., 3.], [4., 5., 6.],]);
 
-    mp[0][0] = 1.1;
-    assert_eq!(1.1, v[(0, 0)]);
-}
+      mp[0][0] = 1.1;
+      assert_eq!(1.1, v[(0, 0)]);
+  }
 // for Vec<[f64; 3]>:2 ends here
 
-// test
-
-// [[file:~/Workspace/Programming/gchemol-rs/vecfx/vecfx.note::*test][test:1]]
+// [[file:../vecfx.note::*test][test:1]]
 #[cfg(feature = "nalgebra")]
 #[test]
 fn test_vector3f() {

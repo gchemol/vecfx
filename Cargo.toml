@@ -1,7 +1,7 @@
-# [[file:~/Workspace/Programming/gchemol-rs/vecfx/vecfx.note::*cargo][cargo:1]]
+# [[file:vecfx.note::*cargo][cargo:1]]
 [package]
 name = "vecfx"
-version = "0.1.2"
+version = "0.1.3"
 edition = "2018"
 authors = ["Wenping Guo <ybyygu@gmail.com>"]
 description = "Extra batteries for a vec of floats"
@@ -11,7 +11,7 @@ readme = "README.md"
 license = "MIT OR Apache-2.0"
 
 [dependencies]
-nalgebra = {version="0.20", optional = true, features=["serde-serialize"]}
+nalgebra = {version="0.22", optional = true, features=["serde-serialize"]}
 
 [dev-dependencies]
 approx = "0.3"
