@@ -1,22 +1,23 @@
 //! Backend for vector operations
 
-// [[file:~/Workspace/Programming/gchemol-rs/vecfx/vecfx.note::*imports][imports:1]]
+// [[file:../vecfx.note::*imports][imports:1]]
 use std::f64;
 // imports:1 ends here
 
-// [[file:~/Workspace/Programming/gchemol-rs/vecfx/vecfx.note::*mods][mods:1]]
+// [[file:../vecfx.note::*mods][mods:1]]
 #[cfg(feature = "nalgebra")]
 mod projection;
 #[cfg(feature = "nalgebra")]
 #[cfg(feature = "adhoc")]
 mod rotation;
 
+mod iterator;
+mod ord;
 mod stats;
 mod vector;
-mod iterator;
 // mods:1 ends here
 
-// [[file:~/Workspace/Programming/gchemol-rs/vecfx/vecfx.note::*pub][pub:1]]
+// [[file:../vecfx.note::*exports][exports:1]]
 pub use crate::stats::*;
 
 #[cfg(feature = "nalgebra")]
@@ -31,4 +32,6 @@ pub use crate::iterator::FloatIterExt;
 
 #[cfg(feature = "nalgebra")]
 pub use crate::iterator::na::*;
-// pub:1 ends here
+
+pub use crate::ord::*;
+// exports:1 ends here
