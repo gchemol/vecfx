@@ -17,7 +17,7 @@ mod stats;
 mod vector;
 // mods:1 ends here
 
-// [[file:../vecfx.note::*exports][exports:1]]
+// [[file:../vecfx.note::*pub][pub:1]]
 pub use crate::stats::*;
 
 #[cfg(feature = "nalgebra")]
@@ -33,5 +33,9 @@ pub use crate::iterator::FloatIterExt;
 #[cfg(feature = "nalgebra")]
 pub use crate::iterator::na::*;
 
+#[cfg(feature = "nalgebra")]
+// for using assert_relative_eq macro for Vector or Matrix
+pub use approx;
+
 pub use crate::ord::*;
-// exports:1 ends here
+// pub:1 ends here
