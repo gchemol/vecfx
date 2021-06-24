@@ -123,10 +123,7 @@ impl VecFloatExt for [f64] {
 
     /// d = ||a-b||^2
     fn vecdist_squared(&self, other: &[f64]) -> f64 {
-        self.iter()
-            .zip(other)
-            .map(|(a, b)| (a - b).powi(2))
-            .sum::<f64>()
+        self.iter().zip(other).map(|(a, b)| (a - b).powi(2)).sum::<f64>()
     }
 
     #[cfg(feature = "nalgebra")]
@@ -206,24 +203,12 @@ pub trait VecFloatAs3D {
 
 impl VecFloatAs3D for [f64] {
     fn as_3d(&self) -> &[[f64; 3]] {
-        assert_eq!(
-            0,
-            self.len() % 3,
-            "cannot view slice of length {} as &[[_; 3]]",
-            self.len()
-        );
-
+        assert_eq!(0, self.len() % 3, "cannot view slice of length {} as &[[_; 3]]", self.len());
         unsafe { ::std::slice::from_raw_parts(self.as_ptr() as *const _, self.len() / 3) }
     }
 
     fn as_mut_3d(&mut self) -> &mut [[f64; 3]] {
-        assert_eq!(
-            0,
-            self.len() % 3,
-            "cannot view slice of length {} as &[[_; 3]]",
-            self.len()
-        );
-
+        assert_eq!(0, self.len() % 3, "cannot view slice of length {} as &[[_; 3]]", self.len());
         unsafe { ::std::slice::from_raw_parts_mut(self.as_ptr() as *mut _, self.len() / 3) }
     }
 }
@@ -330,56 +315,56 @@ fn test_vecf3() {
 // for Vec<[f64; 3]>:1 ends here
 
 // [[file:../vecfx.note::*for Vec<\[f64; 3\]>][for Vec<[f64; 3]>:2]]
-  #[cfg(feature = "nalgebra")]
-  impl VecFloatAs3D for Vector3fVec {
-      fn as_3d(&self) -> &[[f64; 3]] {
-          assert_eq!(
-              0,
-              self.len() % 3,
-              "cannot view Matrix of length {} as &[[_; 3]]",
-              self.len()
-          );
+#[cfg(feature = "nalgebra")]
+impl VecFloatAs3D for Vector3fVec {
+    fn as_3d(&self) -> &[[f64; 3]] {
+        assert_eq!(
+            0,
+            self.len() % 3,
+            "cannot view Matrix of length {} as &[[_; 3]]",
+            self.len()
+        );
 
-          self.as_slice().as_3d()
-      }
+        self.as_slice().as_3d()
+    }
 
-      fn as_mut_3d(&mut self) -> &mut [[f64; 3]] {
-          assert_eq!(
-              0,
-              self.len() % 3,
-              "cannot view Matrix of length {} as &[[_; 3]]",
-              self.len()
-          );
+    fn as_mut_3d(&mut self) -> &mut [[f64; 3]] {
+        assert_eq!(
+            0,
+            self.len() % 3,
+            "cannot view Matrix of length {} as &[[_; 3]]",
+            self.len()
+        );
 
-          self.as_mut_slice().as_mut_3d()
-      }
-  }
+        self.as_mut_slice().as_mut_3d()
+    }
+}
 
-  #[test]
-  fn test_as_3d() {
-      let v = [1., 2., 3.];
-      let p = v.as_3d();
-      assert_eq!(&[[1., 2., 3.]], p);
+#[test]
+fn test_as_3d() {
+    let v = [1., 2., 3.];
+    let p = v.as_3d();
+    assert_eq!(&[[1., 2., 3.]], p);
 
-      let mut v = vec![1., 2., 3., 4., 5., 6.];
-      let p = &mut v.as_mut_3d();
-      assert_eq!(p, &mut [[1., 2., 3.], [4., 5., 6.],]);
-  }
+    let mut v = vec![1., 2., 3., 4., 5., 6.];
+    let p = &mut v.as_mut_3d();
+    assert_eq!(p, &mut [[1., 2., 3.], [4., 5., 6.],]);
+}
 
-  #[test]
-  #[cfg(feature = "nalgebra")]
-  fn test_as_3d_na() {
-      let p = [1., 2., 3.];
-      let mut m = p.as_3d().to_matrix();
-      let _ = m.norm();
+#[test]
+#[cfg(feature = "nalgebra")]
+fn test_as_3d_na() {
+    let p = [1., 2., 3.];
+    let mut m = p.as_3d().to_matrix();
+    let _ = m.norm();
 
-      let mut v = vec![[1., 2., 3.], [4., 5., 6.]].to_matrix();
-      let mp = v.as_mut_3d();
-      assert_eq!(mp, &mut [[1., 2., 3.], [4., 5., 6.],]);
+    let mut v = vec![[1., 2., 3.], [4., 5., 6.]].to_matrix();
+    let mp = v.as_mut_3d();
+    assert_eq!(mp, &mut [[1., 2., 3.], [4., 5., 6.],]);
 
-      mp[0][0] = 1.1;
-      assert_eq!(1.1, v[(0, 0)]);
-  }
+    mp[0][0] = 1.1;
+    assert_eq!(1.1, v[(0, 0)]);
+}
 // for Vec<[f64; 3]>:2 ends here
 
 // [[file:../vecfx.note::*test][test:1]]
