@@ -11,6 +11,7 @@ mod projection;
 #[cfg(feature = "adhoc")]
 mod rotation;
 
+mod array;
 mod iterator;
 mod ord;
 mod stats;
@@ -38,4 +39,6 @@ pub use crate::iterator::na::*;
 pub use approx;
 
 pub use crate::ord::*;
+
+pub use array::*;
 // pub:1 ends here
