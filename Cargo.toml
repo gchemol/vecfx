@@ -1,18 +1,23 @@
-# cargo
-
-# [[file:~/Workspace/Programming/gchemol-rs/vecfx/vecfx.note::*cargo][cargo:1]]
+# [[file:vecfx.note::*cargo][cargo:1]]
 [package]
 name = "vecfx"
-version = "0.0.8"
+version = "0.1.4"
 edition = "2018"
 authors = ["Wenping Guo <ybyygu@gmail.com>"]
+description = "Extra batteries for a vec of floats"
+homepage = "https://github.com/gchemol/vecfx"
+repository = "https://github.com/gchemol/vecfx"
+readme = "README.md"
+license = "MIT OR Apache-2.0"
 
 [dependencies]
-nalgebra = {version="0.19", optional = true, features=["serde-serialize"]}
+nalgebra = {version="0.27", optional = true, features=["serde-serialize"]}
+ordered-float = "2.0"
+approx = "0.5"
 
 [dev-dependencies]
-approx = "0.3"
 
 [features]
+adhoc = [] # for adhoc hacking
 default = []
 # cargo:1 ends here

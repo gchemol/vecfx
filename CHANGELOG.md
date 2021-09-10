@@ -1,4 +1,19 @@
 
+# <span class="timestamp-wrapper"><span class="timestamp">[2020-02-18 Tue] </span></span> v0.1.0
+
+-   fix doc typo
+
+
+# <span class="timestamp-wrapper"><span class="timestamp">[2019-12-23 Mon] </span></span> v0.0.8
+
+-   re-exports nalgebra package
+
+
+# <span class="timestamp-wrapper"><span class="timestamp">[2019-12-10 Tue] </span></span> v0.0.7
+
+-   expose Matrix3f type
+
+
 # <span class="timestamp-wrapper"><span class="timestamp">[2019-12-06 Fri] </span></span> v0.0.6
 
 -   add mean, var, std\_dev methods adopted from libtest.

@@ -1,12 +1,8 @@
-// imports
-
 // [[file:~/Workspace/Programming/gchemol-rs/vecfx/vecfx.note::*imports][imports:1]]
 use crate::{VecFloatExt, Vector3fVec};
 
 use nalgebra as na;
 // imports:1 ends here
-
-// base
 
 // [[file:~/Workspace/Programming/gchemol-rs/vecfx/vecfx.note::*base][base:1]]
 pub trait VectorProject {
@@ -19,8 +15,6 @@ pub trait VectorProject {
     fn vector_rejection(&self, vb: &Self) -> Self;
 }
 // base:1 ends here
-
-// core
 
 // [[file:~/Workspace/Programming/gchemol-rs/vecfx/vecfx.note::*core][core:1]]
 macro_rules! impl_vector_project {
@@ -52,8 +46,6 @@ macro_rules! impl_vector_project {
 impl_vector_project!(na::DVector<f64>);
 impl_vector_project!(Vector3fVec);
 // core:1 ends here
-
-// test
 
 // [[file:~/Workspace/Programming/gchemol-rs/vecfx/vecfx.note::*test][test:1]]
 #[test]

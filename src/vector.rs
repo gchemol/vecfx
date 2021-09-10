@@ -1,13 +1,9 @@
-// imports
-
-// [[file:~/Workspace/Programming/gchemol-rs/vecfx/vecfx.note::*imports][imports:1]]
+// [[file:../vecfx.note::*imports][imports:1]]
 #[cfg(feature = "nalgebra")]
 use nalgebra as na;
 // imports:1 ends here
 
-// types
-
-// [[file:~/Workspace/Programming/gchemol-rs/vecfx/vecfx.note::*types][types:1]]
+// [[file:../vecfx.note::*types][types:1]]
 #[cfg(feature = "nalgebra")]
 /// 3xN matrix storing a list of 3D vectors
 pub type Vector3fVec =
@@ -20,11 +16,13 @@ pub type Vector3f = na::Vector3<f64>;
 #[cfg(feature = "nalgebra")]
 /// A stack-allocated, column-major, 3x3 square matrix
 pub type Matrix3f = na::Matrix3<f64>;
+
+// #[cfg(feature = "nalgebra")]
+// /// A dynamically sized column vector
+// pub type Vector = na::DVector<f64>;
 // types:1 ends here
 
-// for Vec<f64>
-
-// [[file:~/Workspace/Programming/gchemol-rs/vecfx/vecfx.note::*for%20Vec<f64>][for Vec<f64>:1]]
+// [[file:../vecfx.note::*for Vec<f64>][for Vec<f64>:1]]
 /// Abstracting simple vector based math operations
 pub trait VecFloatExt {
     /// y += c*x
@@ -46,7 +44,7 @@ pub trait VecFloatExt {
     /// y *= c
     fn vecscale(&mut self, c: f64);
 
-    /// ||x||
+    /// ||x||, L2 norm
     fn vec2norm(&self) -> f64;
 
     /// 1 / ||x||
@@ -112,7 +110,7 @@ impl VecFloatExt for [f64] {
         }
     }
 
-    /// ||x||
+    /// ||x||, L2 norm
     fn vec2norm(&self) -> f64 {
         let n2 = self.vecdot(&self);
         n2.sqrt()
@@ -123,12 +121,9 @@ impl VecFloatExt for [f64] {
         1.0 / self.vec2norm()
     }
 
-    /// d = ||a-b||
+    /// d = ||a-b||^2
     fn vecdist_squared(&self, other: &[f64]) -> f64 {
-        self.iter()
-            .zip(other)
-            .map(|(a, b)| (a - b).powi(2))
-            .sum::<f64>()
+        self.iter().zip(other).map(|(a, b)| (a - b).powi(2)).sum::<f64>()
     }
 
     #[cfg(feature = "nalgebra")]
@@ -194,7 +189,7 @@ fn test_vec_math_na() {
     assert_eq!(v.norm_squared(), 3.0);
 }
 
-/// Treat a flat slice as 3D coordinates
+/// View a flat slice as nested 3D array
 ///
 /// # Panics
 /// if the slice size is incorrect.
@@ -208,32 +203,18 @@ pub trait VecFloatAs3D {
 
 impl VecFloatAs3D for [f64] {
     fn as_3d(&self) -> &[[f64; 3]] {
-        assert_eq!(
-            0,
-            self.len() % 3,
-            "cannot view slice of length {} as &[[_; 3]]",
-            self.len()
-        );
-
+        assert_eq!(0, self.len() % 3, "cannot view slice of length {} as &[[_; 3]]", self.len());
         unsafe { ::std::slice::from_raw_parts(self.as_ptr() as *const _, self.len() / 3) }
     }
 
     fn as_mut_3d(&mut self) -> &mut [[f64; 3]] {
-        assert_eq!(
-            0,
-            self.len() % 3,
-            "cannot view slice of length {} as &[[_; 3]]",
-            self.len()
-        );
-
+        assert_eq!(0, self.len() % 3, "cannot view slice of length {} as &[[_; 3]]", self.len());
         unsafe { ::std::slice::from_raw_parts_mut(self.as_ptr() as *mut _, self.len() / 3) }
     }
 }
 // for Vec<f64>:1 ends here
 
-// for Vec<[f64; 3]>
-
-// [[file:~/Workspace/Programming/gchemol-rs/vecfx/vecfx.note::*for%20Vec<%5Bf64;%203%5D>][for Vec<[f64; 3]>:1]]
+// [[file:../vecfx.note::*for Vec<\[f64; 3\]>][for Vec<[f64; 3]>:1]]
 pub trait VecFloat3Ext {
     /// Return a 1-D array, containing the elements of 3xN array
     fn ravel(&self) -> Vec<f64> {
@@ -249,6 +230,11 @@ pub trait VecFloat3Ext {
     #[cfg(feature = "nalgebra")]
     /// Create a 3xN matrix of nalgebra from self
     fn to_matrix(&self) -> Vector3fVec;
+
+    #[cfg(feature = "nalgebra")]
+    #[cfg(feature = "adhoc")]
+    /// Return distance matrix
+    fn distance_matrix(&self) -> na::DMatrix<f64>;
 }
 
 impl VecFloat3Ext for [[f64; 3]] {
@@ -267,6 +253,24 @@ impl VecFloat3Ext for [[f64; 3]] {
     fn to_matrix(&self) -> Vector3fVec {
         let r = self.as_flat();
         Vector3fVec::from_column_slice(r)
+    }
+
+    /// Return distance matrix
+    #[cfg(feature = "nalgebra")]
+    #[cfg(feature = "adhoc")]
+    fn distance_matrix(&self) -> na::DMatrix<f64> {
+        let n = self.len();
+
+        let mut distances = na::DMatrix::zeros(n, n);
+        for i in 0..n {
+            for j in 0..i {
+                let d = self[i].vecdist(&self[j]);
+                distances[(i, j)] = d;
+                distances[(j, i)] = d;
+            }
+        }
+
+        distances
     }
 }
 
@@ -310,7 +314,7 @@ fn test_vecf3() {
 }
 // for Vec<[f64; 3]>:1 ends here
 
-// [[file:~/Workspace/Programming/gchemol-rs/vecfx/vecfx.note::*for%20Vec<%5Bf64;%203%5D>][for Vec<[f64; 3]>:2]]
+// [[file:../vecfx.note::*for Vec<\[f64; 3\]>][for Vec<[f64; 3]>:2]]
 #[cfg(feature = "nalgebra")]
 impl VecFloatAs3D for Vector3fVec {
     fn as_3d(&self) -> &[[f64; 3]] {
@@ -363,9 +367,7 @@ fn test_as_3d_na() {
 }
 // for Vec<[f64; 3]>:2 ends here
 
-// test
-
-// [[file:~/Workspace/Programming/gchemol-rs/vecfx/vecfx.note::*test][test:1]]
+// [[file:../vecfx.note::*test][test:1]]
 #[cfg(feature = "nalgebra")]
 #[test]
 fn test_vector3f() {
