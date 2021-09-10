@@ -3,16 +3,24 @@ use crate::Float;
 // imports:1 ends here
 
 // [[file:../vecfx.note::*core][core:1]]
-type Array3<F: Float> = [F; 3];
-
 #[inline]
-fn array_add<F: Float>(x: Array3<F>, y: Array3<F>) -> Array3<F> {
-    [x[0] + y[0], x[1] + y[1], x[2] + y[2]]
+fn array_sub_generic<F, const N: usize>(x: [F; N], y: [F; N]) -> [F; N]
+where
+    F: Float + std::fmt::Debug,
+{
+    use std::convert::TryInto;
+    let d: Vec<_> = x.iter().zip(y.iter()).map(|(a, b)| *a - *b).collect();
+    d.try_into().unwrap()
 }
 
 #[inline]
-fn array_sub<F: Float>(x: Array3<F>, y: Array3<F>) -> Array3<F> {
-    [x[0] - y[0], x[1] - y[1], x[2] - y[2]]
+fn array_add_generic<F, const N: usize>(x: [F; N], y: [F; N]) -> [F; N]
+where
+    F: Float + std::fmt::Debug,
+{
+    use std::convert::TryInto;
+    let d: Vec<_> = x.iter().zip(y.iter()).map(|(a, b)| *a + *b).collect();
+    d.try_into().unwrap()
 }
 
 /// Simple math for array
@@ -22,20 +30,23 @@ pub trait ArrayMathExt<F: Float> {
     fn array_scale(self, value: F) -> Self;
 }
 
-impl<F: Float> ArrayMathExt<F> for [F; 3] {
+impl<F, const N: usize> ArrayMathExt<F> for [F; N]
+where
+    F: Float + std::fmt::Debug,
+{
     /// Adds two arrays. Returns x + y.
     fn array_add(self, other: Self) -> Self {
-        array_add(self, other)
+        array_add_generic(self, other)
     }
 
     /// Subtracts two arrays. Returns x - y.
     fn array_sub(self, other: Self) -> Self {
-        array_sub(self, other)
+        array_sub_generic(self, other)
     }
 
     /// Scale one array with a value.
     fn array_scale(self, value: F) -> Self {
-        [self[0] * value, self[1] * value, self[2] * value]
+        self.map(|x| x * value)
     }
 }
 // core:1 ends here
@@ -55,5 +66,9 @@ fn test_array_sub_add() {
     assert_relative_eq!(p4[0], 2.1, epsilon = 1e-4);
     assert_relative_eq!(p4[1], 4.2, epsilon = 1e-4);
     assert_relative_eq!(p4[2], 6.3, epsilon = 1e-4);
+    let p5 = p1.array_scale(2.0);
+    assert_eq!(p5[0], 2.0);
+    assert_eq!(p5[1], 4.0);
+    assert_eq!(p5[2], 6.0);
 }
 // test:1 ends here
