@@ -124,16 +124,12 @@ impl StatsExt for [f64] {
 
     fn imin(&self) -> usize {
         assert!(!self.is_empty());
-        self.iter()
-            .enumerate()
-            .fold(0, |i, (j, q)| if self[i] > *q { j } else { i })
+        self.iter().enumerate().fold(0, |i, (j, q)| if self[i] > *q { j } else { i })
     }
 
     fn imax(&self) -> usize {
         assert!(!self.is_empty());
-        self.iter()
-            .enumerate()
-            .fold(0, |i, (j, q)| if self[i] > *q { i } else { j })
+        self.iter().enumerate().fold(0, |i, (j, q)| if self[i] > *q { i } else { j })
     }
 }
 // stats:1 ends here

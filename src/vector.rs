@@ -6,8 +6,7 @@ use nalgebra as na;
 // [[file:../vecfx.note::*types][types:1]]
 #[cfg(feature = "nalgebra")]
 /// 3xN matrix storing a list of 3D vectors
-pub type Vector3fVec =
-    na::Matrix<f64, na::U3, na::Dynamic, na::VecStorage<f64, na::U3, na::Dynamic>>;
+pub type Vector3fVec = na::Matrix<f64, na::U3, na::Dynamic, na::VecStorage<f64, na::U3, na::Dynamic>>;
 
 #[cfg(feature = "nalgebra")]
 /// A stack-allocated, 3-dimensional column vector.
@@ -318,23 +317,13 @@ fn test_vecf3() {
 #[cfg(feature = "nalgebra")]
 impl VecFloatAs3D for Vector3fVec {
     fn as_3d(&self) -> &[[f64; 3]] {
-        assert_eq!(
-            0,
-            self.len() % 3,
-            "cannot view Matrix of length {} as &[[_; 3]]",
-            self.len()
-        );
+        assert_eq!(0, self.len() % 3, "cannot view Matrix of length {} as &[[_; 3]]", self.len());
 
         self.as_slice().as_3d()
     }
 
     fn as_mut_3d(&mut self) -> &mut [[f64; 3]] {
-        assert_eq!(
-            0,
-            self.len() % 3,
-            "cannot view Matrix of length {} as &[[_; 3]]",
-            self.len()
-        );
+        assert_eq!(0, self.len() % 3, "cannot view Matrix of length {} as &[[_; 3]]", self.len());
 
         self.as_mut_slice().as_mut_3d()
     }

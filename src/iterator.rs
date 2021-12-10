@@ -60,11 +60,11 @@ use std::f64;
 /// # Example
 /// ```
 /// use vecfx::*;
-/// 
+///
 /// let values = vec![1.0, 2.1, -1.1];
 /// assert_eq!(values.iter().float_max(), 2.1);
 /// assert_eq!(values.iter().float_min(), -1.1);
-/// 
+///
 /// let values = vec![1.2, 0.0/0.0, 2.2];
 /// assert_eq!(values.iter().float_max(), 2.2);
 /// assert_eq!(values.iter().float_min(), 1.2);

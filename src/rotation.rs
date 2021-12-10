@@ -42,7 +42,7 @@ fn test_rotation() {
 
     // 求1-2-5角度
     let angle_215 = v12.angle(&v15);
-    dbg!(angle_215/3.1415 * 180.0);
+    dbg!(angle_215 / 3.1415 * 180.0);
 
     // let axis = Vector3::y_axis();
     let angle = std::f64::consts::FRAC_PI_4;
@@ -55,8 +55,6 @@ fn test_rotation() {
     let rot = Rotation3::from_axis_angle(&Unit::new_normalize(normal_215), angle);
     let p6_prime = rot * (p6 - &p1) + p1;
     dbg!(p6_prime);
-
-
 
     // Point and vector being transformed in the tests.
     let n = Vector3::new(1.0, 0.1, 0.0);

@@ -56,21 +56,21 @@ fn test_vector_projection() {
     let vb = [1.1, 1.2, 1.3].to_vector();
 
     let x = va.cosine_similarity(&vb);
-    assert_relative_eq!(x, 0.9976931918526477, epsilon=1e-4);
+    assert_relative_eq!(x, 0.9976931918526477, epsilon = 1e-4);
 
     let x = va.scalar_projection(&vb);
-    assert_relative_eq!(x, 1.728055, epsilon=1e-4);
+    assert_relative_eq!(x, 1.728055, epsilon = 1e-4);
 
     let x = va.vector_projection(&vb);
-    let e = [0.9124424 , 0.99539171, 1.07834101];
+    let e = [0.9124424, 0.99539171, 1.07834101];
     for i in 0..3 {
-        assert_relative_eq!(x[i], e[i], epsilon=1e-4);
+        assert_relative_eq!(x[i], e[i], epsilon = 1e-4);
     }
 
     let x = va.vector_rejection(&vb);
-    let e = [ 0.0875576 ,  0.00460829, -0.07834101];
+    let e = [0.0875576, 0.00460829, -0.07834101];
     for i in 0..3 {
-        assert_relative_eq!(x[i], e[i], epsilon=1e-4);
+        assert_relative_eq!(x[i], e[i], epsilon = 1e-4);
     }
 }
 // test:1 ends here

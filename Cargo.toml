@@ -1,4 +1,4 @@
-# [[file:vecfx.note::*cargo][cargo:1]]
+# [[file:vecfx.note::20502207][20502207]]
 [package]
 name = "vecfx"
 version = "0.1.4"
@@ -11,7 +11,7 @@ readme = "README.md"
 license = "MIT OR Apache-2.0"
 
 [dependencies]
-nalgebra = {version="0.27", optional = true, features=["serde-serialize"]}
+nalgebra = {version="0.29", optional = true, features=["serde-serialize"]}
 ordered-float = "2.0"
 approx = "0.5"
 
@@ -20,4 +20,4 @@ approx = "0.5"
 [features]
 adhoc = [] # for adhoc hacking
 default = []
-# cargo:1 ends here
+# 20502207 ends here
