@@ -6,7 +6,8 @@ use nalgebra as na;
 // [[file:../vecfx.note::*types][types:1]]
 #[cfg(feature = "nalgebra")]
 /// 3xN matrix storing a list of 3D vectors
-pub type Vector3fVec = na::Matrix<f64, na::U3, na::Dynamic, na::VecStorage<f64, na::U3, na::Dynamic>>;
+pub type Vector3fVec =
+    na::Matrix<f64, na::U3, na::Dynamic, na::VecStorage<f64, na::U3, na::Dynamic>>;
 
 #[cfg(feature = "nalgebra")]
 /// A stack-allocated, 3-dimensional column vector.
@@ -317,13 +318,23 @@ fn test_vecf3() {
 #[cfg(feature = "nalgebra")]
 impl VecFloatAs3D for Vector3fVec {
     fn as_3d(&self) -> &[[f64; 3]] {
-        assert_eq!(0, self.len() % 3, "cannot view Matrix of length {} as &[[_; 3]]", self.len());
+        assert_eq!(
+            0,
+            self.len() % 3,
+            "cannot view Matrix of length {} as &[[_; 3]]",
+            self.len()
+        );
 
         self.as_slice().as_3d()
     }
 
     fn as_mut_3d(&mut self) -> &mut [[f64; 3]] {
-        assert_eq!(0, self.len() % 3, "cannot view Matrix of length {} as &[[_; 3]]", self.len());
+        assert_eq!(
+            0,
+            self.len() % 3,
+            "cannot view Matrix of length {} as &[[_; 3]]",
+            self.len()
+        );
 
         self.as_mut_slice().as_mut_3d()
     }
@@ -356,7 +367,32 @@ fn test_as_3d_na() {
 }
 // for Vec<[f64; 3]>:2 ends here
 
-// [[file:../vecfx.note::*test][test:1]]
+// [[file:../vecfx.note::4edfda94][4edfda94]]
+#[cfg(feature = "nalgebra")]
+mod slice {
+    use nalgebra::DVectorSlice;
+    use nalgebra::DVectorSliceMut;
+
+    pub trait SliceNaExt {
+        /// View of mut flat slice
+        fn as_vector_slice(&self) -> DVectorSlice<f64>;
+    }
+
+    impl SliceNaExt for [f64] {
+        fn as_vector_slice(&self) -> DVectorSlice<f64> {
+            // NOTE: DVectorSlice::from does not work (nalgebra v0.29)
+            DVectorSlice::from_slice(&self, self.len())
+        }
+    }
+}
+// 4edfda94 ends here
+
+// [[file:../vecfx.note::db30f038][db30f038]]
+#[cfg(feature = "nalgebra")]
+pub use self::slice::*;
+// db30f038 ends here
+
+// [[file:../vecfx.note::85f5310c][85f5310c]]
 #[cfg(feature = "nalgebra")]
 #[test]
 fn test_vector3f() {
@@ -374,4 +410,13 @@ fn test_vector3f() {
     let c = a + b;
     assert_relative_eq!(c.sum(), 12.0);
 }
-// test:1 ends here
+
+#[test]
+fn test_na_slice() {
+    let x = [1.0, 2.0];
+    let a = x.as_vector_slice();
+    let x = [1.0, 2.0];
+    let b = x.as_vector_slice();
+    assert_eq!((b - a).norm(), 0.0);
+}
+// 85f5310c ends here
