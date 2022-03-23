@@ -376,12 +376,19 @@ mod slice {
     pub trait SliceNaExt {
         /// View of mut flat slice
         fn as_vector_slice(&self) -> DVectorSlice<f64>;
+        fn as_vector_slice_mut(&mut self) -> DVectorSliceMut<f64>;
     }
 
     impl SliceNaExt for [f64] {
+        /// A column vector with slice storage.
         fn as_vector_slice(&self) -> DVectorSlice<f64> {
             // NOTE: DVectorSlice::from does not work (nalgebra v0.29)
-            DVectorSlice::from_slice(&self, self.len())
+            DVectorSlice::from_slice(self, self.len())
+        }
+
+        /// A column vector with mutable slice storage.
+        fn as_vector_slice_mut(&mut self) -> DVectorSliceMut<f64> {
+            DVectorSliceMut::from_slice(self, self.len())
         }
     }
 }

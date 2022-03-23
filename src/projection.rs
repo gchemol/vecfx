@@ -1,10 +1,10 @@
-// [[file:~/Workspace/Programming/gchemol-rs/vecfx/vecfx.note::*imports][imports:1]]
+// [[file:../vecfx.note::bc0ea816][bc0ea816]]
 use crate::{VecFloatExt, Vector3fVec};
 
 use nalgebra as na;
-// imports:1 ends here
+// bc0ea816 ends here
 
-// [[file:~/Workspace/Programming/gchemol-rs/vecfx/vecfx.note::*base][base:1]]
+// [[file:../vecfx.note::*base][base:1]]
 pub trait VectorProject {
     fn cosine_similarity(&self, vb: &Self) -> f64;
 
@@ -16,7 +16,7 @@ pub trait VectorProject {
 }
 // base:1 ends here
 
-// [[file:~/Workspace/Programming/gchemol-rs/vecfx/vecfx.note::*core][core:1]]
+// [[file:../vecfx.note::1f0f248b][1f0f248b]]
 macro_rules! impl_vector_project {
     ($type_name:ty) => {
         impl VectorProject for $type_name {
@@ -45,9 +45,9 @@ macro_rules! impl_vector_project {
 
 impl_vector_project!(na::DVector<f64>);
 impl_vector_project!(Vector3fVec);
-// core:1 ends here
+// 1f0f248b ends here
 
-// [[file:~/Workspace/Programming/gchemol-rs/vecfx/vecfx.note::*test][test:1]]
+// [[file:../vecfx.note::f82eabd3][f82eabd3]]
 #[test]
 fn test_vector_projection() {
     use approx::*;
@@ -73,4 +73,4 @@ fn test_vector_projection() {
         assert_relative_eq!(x[i], e[i], epsilon = 1e-4);
     }
 }
-// test:1 ends here
+// f82eabd3 ends here
