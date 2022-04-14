@@ -1,21 +1,23 @@
-// [[file:../vecfx.note::*impl][impl:1]]
+// [[file:../vecfx.note::be82ddff][be82ddff]]
 use std::borrow::Borrow;
 
 pub use ordered_float::{Float, OrderedFloat};
 
-// Not very useful
-trait IntoOrderedExt {
-    fn into_ordered(self) -> Vec<OrderedFloat<f64>>;
+/// Convert a float number to OrderedFloat type
+pub trait AsOrderedFloatExt<F>
+where
+    F: Float,
+{
+    fn as_ordered_float(self) -> OrderedFloat<F>;
 }
 
-impl<F, T> IntoOrderedExt for T
+impl<F> AsOrderedFloatExt<F> for F
 where
-    T: Iterator<Item = F>,
-    F: std::borrow::Borrow<f64>,
+    F: Float,
 {
-    /// Convert an iterator over floats into a vec of ordered floats
-    fn into_ordered(self) -> Vec<OrderedFloat<f64>> {
-        self.map(|x| OrderedFloat(*x.borrow())).collect()
+    /// Convert a float number to OrderedFloat type
+    fn as_ordered_float(self) -> OrderedFloat<F> {
+        OrderedFloat(self)
     }
 }
 
@@ -30,15 +32,14 @@ impl<F: Float> SortByExt for [F] {
         self.sort_by_key(|x| OrderedFloat(*x));
     }
 }
-// impl:1 ends here
+// be82ddff ends here
 
-// [[file:../vecfx.note::*test][test:1]]
+// [[file:../vecfx.note::edd3e54f][edd3e54f]]
 #[test]
 fn test_float_ord() {
     let mut values = vec![1.0, -1.0, 2.0];
-    let mut values_ordered = values.iter().into_ordered();
+    let mut values_ordered: Vec<_> = values.iter().map(|x| x.as_ordered_float()).collect();
     values_ordered.sort();
-
     assert_eq!(values_ordered[0], -1.0);
     assert_eq!(values_ordered[2], 2.0);
 
@@ -46,4 +47,4 @@ fn test_float_ord() {
     assert_eq!(values[0], values_ordered[0].into());
     assert_eq!(values[1], values_ordered[1].into());
 }
-// test:1 ends here
+// edd3e54f ends here
