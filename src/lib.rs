@@ -18,7 +18,7 @@ mod stats;
 mod vector;
 // mods:1 ends here
 
-// [[file:../vecfx.note::*pub][pub:1]]
+// [[file:../vecfx.note::ecfb2b0c][ecfb2b0c]]
 pub use crate::stats::*;
 
 #[cfg(feature = "nalgebra")]
@@ -41,4 +41,7 @@ pub use approx;
 pub use crate::ord::*;
 
 pub use array::*;
-// pub:1 ends here
+
+// ordered floats
+pub use ord::*;
+// ecfb2b0c ends here

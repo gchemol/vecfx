@@ -1,7 +1,7 @@
 # [[file:vecfx.note::20502207][20502207]]
 [package]
 name = "vecfx"
-version = "0.1.5"
+version = "0.1.6"
 edition = "2021"
 authors = ["Wenping Guo <ybyygu@gmail.com>"]
 description = "Extra batteries for a vec of floats"
@@ -12,7 +12,7 @@ license = "MIT OR Apache-2.0"
 
 [dependencies]
 nalgebra = {version="0.30", optional = true, features=["serde-serialize"]}
-ordered-float = "2.10"
+ordered-float = {version="3", features=["serde", "rand"]}
 approx = "0.5"
 
 [dev-dependencies]
