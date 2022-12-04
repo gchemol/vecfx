@@ -11,7 +11,7 @@ readme = "README.md"
 license = "MIT OR Apache-2.0"
 
 [dependencies]
-nalgebra = {version="0.30", optional = true, features=["serde-serialize"]}
+nalgebra = {version="0.31", optional = true, features=["serde-serialize"]}
 ordered-float = {version="3", features=["serde", "rand"]}
 approx = "0.5"
 
